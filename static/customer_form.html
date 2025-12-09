@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Automotive - Contact Us</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f3a 50%, #0a0e27 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6, #ffffff, #1d4ed8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group select option {
+            background: #ffffff !important;
+            color: #000000 !important;
+            padding: 12px 16px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .form-group select option:hover {
+            background: #f3f4f6 !important;
+            color: #000000 !important;
+        }
+
+        .form-group select option:checked {
+            background: #3b82f6 !important;
+            color: #ffffff !important;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: rgb(0, 0, 0);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #3b82f6;
+            font-style: italic;
+        }
+
+        .vehicle-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .vehicle-option {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .vehicle-option:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+        }
+
+        .vehicle-option.selected {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .vehicle-options {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">LUXURY AUTOMOTIVE</div>
+            <div class="subtitle">Experience the Extraordinary</div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <h3>🎉 Thank You!</h3>
+            <p>Your inquiry has been received. Our luxury automotive specialists will contact you within 24 hours.</p>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            <h3>❌ Error</h3>
+            <p id="errorText">Something went wrong. Please try again.</p>
+        </div>
+
+        <form id="customerForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+91-9876543210" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="source">How did you hear about us? *</label>
+                <select id="source" name="source" required>
+                    <option value="">Select an option</option>
+                    <option value="Website">Website</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Referral">Referral</option>
+                    <option value="Showroom Visit">Showroom Visit</option>
+                    <option value="Advertisement">Advertisement</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Vehicle Interest *</label>
+                <div class="vehicle-options">
+                    <div class="vehicle-option" data-value="Rolls-Royce Phantom">Rolls-Royce Phantom</div>
+                    <div class="vehicle-option" data-value="Rolls-Royce Ghost">Rolls-Royce Ghost</div>
+                    <div class="vehicle-option" data-value="Rolls-Royce Cullinan">Rolls-Royce Cullinan</div>
+                    <div class="vehicle-option" data-value="Bentley Continental">Bentley Continental</div>
+                    <div class="vehicle-option" data-value="Bentley Flying Spur">Bentley Flying Spur</div>
+                    <div class="vehicle-option" data-value="Ferrari 488">Ferrari 488</div>
+                    <div class="vehicle-option" data-value="Lamborghini Huracán">Lamborghini Huracán</div>
+                    <div class="vehicle-option" data-value="Other">Other</div>
+                </div>
+                <input type="hidden" id="interest" name="interest" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="budget_range">Budget Range *</label>
+                    <select id="budget_range" name="budget_range" required>
+                        <option value="">Select budget range</option>
+                        <option value="₹1-2 Crores">₹1-2 Crores</option>
+                        <option value="₹2-3 Crores">₹2-3 Crores</option>
+                        <option value="₹3-5 Crores">₹3-5 Crores</option>
+                        <option value="₹5+ Crores">₹5+ Crores</option>
+                        <option value="Custom Budget">Custom Budget</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="existing_customer">Are you an existing customer?</label>
+                    <select id="existing_customer" name="existing_customer">
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Additional Message</label>
+                <textarea id="message" name="message" rows="4" placeholder="Tell us more about your requirements..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Submit Inquiry
+            </button>
+
+            <div class="loading" id="loading">
+                Processing your inquiry...
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Vehicle selection
+        document.querySelectorAll('.vehicle-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.vehicle-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('interest').value = this.dataset.value;
+            });
+        });
+
+        // Form submission
+        document.getElementById('customerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.style.display = 'none';
+            loading.style.display = 'block';
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            try {
+                // Collect form data
+                const formData = new FormData(this);
+                const leadData = {
+                    name: formData.get('name'),
+                    phone: formData.get('phone'),
+                    email: formData.get('email'),
+                    source: formData.get('source'),
+                    interest: formData.get('interest'),
+                    budget_range: formData.get('budget_range'),
+                    existing_customer: formData.get('existing_customer') === 'true',
+                    message: formData.get('message')
+                };
+                
+                // Use the default API token from environment
+                const token = 'AJoIgBPsxE2_t6Mi7L7DOOTxuWo3iEjFe8QmP2rQ3xU';
+
+                // Submit to workflow using the provided token
+                const response = await fetch('/workflow/run', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token ? ('Bearer ' + token) : ''
+                    },
+                    body: JSON.stringify({
+                        trigger: 'new_lead',
+                        lead_data: leadData
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Lead created:', result);
+
+                    // Store the lead data and workflow response so the orchestrator (if open in another tab)
+                    // can pick it up via the storage event. We use localStorage so other tabs can listen.
+                    try {
+                        const response = await fetch('/generate-token');
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch token');
+                        }
+                        const data = await response.json();
+                        const payloadForOrch = {
+                            leadData: leadData,
+                            workflowResult: result,
+                            baseUrl: window.location.origin,
+                            token: data.token // Use dynamically fetched token
+                        };
+                        localStorage.setItem('incomingWorkflow', JSON.stringify(payloadForOrch));
+                        localStorage.setItem('incomingWorkflow_ts', String(Date.now()));
+                    } catch (e) {
+                        console.warn('Failed to store incoming workflow for orchestrator:', e);
+                    }
+
+                    // Show success message but DO NOT redirect — the orchestrator (if open) will receive the update.
+                    successMessage.style.display = 'block';
+                    this.reset();
+                    document.querySelectorAll('.vehicle-option').forEach(opt => opt.classList.remove('selected'));
+
+                    // Reset form after 3 seconds
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                        submitBtn.disabled = false;
+                        submitBtn.style.display = 'block';
+                        loading.style.display = 'none';
+                    }, 3000);
+
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to submit inquiry');
+                }
+                
+            } catch (error) {
+                console.error('Form submission error:', error);
+                
+                // Show error message
+                document.getElementById('errorText').textContent = error.message;
+                errorMessage.style.display = 'block';
+                
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.style.display = 'block';
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
