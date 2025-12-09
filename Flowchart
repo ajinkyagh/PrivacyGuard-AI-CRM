@@ -1,0 +1,126 @@
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          LUXURY AUTOMOTIVE SYSTEM                            │
+│                    (Privacy-First Agentic AI Platform)                       │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+                               ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                           PRESENTATION LAYER                                 │
+├──────────────────────────────────────────────────────────────────────────────┤
+│ React Frontend (Static UI)                                                   │
+│ • Dashboard with Pipeline View                                               │
+│ • Lead Classification Filter (Cold / Warm / Hot / VIP)                       │
+│ • Real-time Stats & Analytics                                                │
+│ • Lead Submission Form                                                       │
+│ REST API: Flask + CORS                                                       │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+                               ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                       APPLICATION LAYER (Flask)                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│ API Endpoints (app.py):                                                      │
+│ • POST /api/workflow        • POST /voice/call                               │
+│ • GET /api/dashboard        • POST /voice/webhook                            │
+│ • GET /api/leads            • POST /calls (Vapi)                             │
+│ • GET /api/interactions     • POST /sensy/webhook                            │
+│ • GET /api/forecast         • POST /api/interactions                         │
+│ Authentication: Bearer Token                                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+                               ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                     WORKFLOW ORCHESTRATION LAYER                             │
+│                          (LangGraph StateGraph)                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│ WorkflowState Variables: lead_data, lead_score, classification,              │
+│ scheduled_actions, email_status, document_status, executed_agents,           │
+│ lead_stage, conversion_probability                                           │
+│                                                                              │
+│ ┌──────────────────────────────────────────────────────────────────────────┐ │
+│ │ 1. LEAD_INTELLIGENCE_AGENT                                               │ │
+│ │    - Extracts: budget_range, interest, source                             │ │
+│ │    - Calls: score_lead_llm() → 0–100 score                                │ │
+│ │    - Classification: Hot / Warm / Cold / VIP                              │ │
+│ │    - Inserts lead into SQLite DB                                          │ │
+│ └──────────────────────────────────────────────────────────────────────────┘ │
+│                                   ▼                                          │
+│ ┌──────────────────────────────────────────────────────────────────────────┐ │
+│ │ 2. VOICE_AGENT                                                           │ │
+│ │    - Hot Lead → Call in 4h                                               │ │
+│ │    - Warm/Cold → Call in 24h                                             │ │
+│ │    - Uses: Vapi / Sensy APIs                                             │ │
+│ │    - Updates lead stage to “contacted”                                   │ │
+│ └──────────────────────────────────────────────────────────────────────────┘ │
+│                                   ▼                                          │
+│ ┌──────────────────────────────────────────────────────────────────────────┐ │
+│ │ 3. EMAIL_ORCHESTRATION_AGENT                                             │ │
+│ │    - VIP → luxury_welcome_vip                                            │ │
+│ │    - Hot → premium_welcome_hot                                           │ │
+│ │    - Warm/Cold → standard_welcome                                        │ │
+│ │    - Sends professional HTML email via Gmail SMTP                        │ │
+│ └──────────────────────────────────────────────────────────────────────────┘ │
+│                                   ▼                                          │
+│ ┌──────────────────────────────────────────────────────────────────────────┐ │
+│ │ 4. DOCUMENT_GENERATION_AGENT                                             │ │
+│ │    - Hot/VIP: Quotation + Contract PDFs                                  │ │
+│ │    - Warm: Brochure summary                                              │ │
+│ │    - ReportLab PDF Generation + GST (28%)                                │ │
+│ │    - Emails documents as attachments                                     │ │
+│ └──────────────────────────────────────────────────────────────────────────┘ │
+│                                   ▼                                          │
+│ ┌──────────────────────────────────────────────────────────────────────────┐ │
+│ │ 5. CRM_ANALYTICS_AGENT                                                   │ │
+│ │    - Updates lead stage: Opportunity / Qualified                         │ │
+│ │    - Calculates conversion probability                                   │ │
+│ │    - Fetches dashboard stats                                             │ │
+│ └──────────────────────────────────────────────────────────────────────────┘ │
+│                                   ▼                                          │
+│ ┌──────────────────────────────────────────────────────────────────────────┐ │
+│ │ 6. WORKFLOW_AUTOMATION_AGENT                                             │ │
+│ │    - Hot Lead: Call 4h → Quotation → Follow-up Email (1d)                │ │
+│ │    - Warm: Call 24h → Brochure → Follow-up (3d)                          │ │
+│ │    - Cold: Nurture Email Sequence Weekly                                 │ │
+│ │    - VIP: Concierge 4h → Private Invite 2d → Config Session 3d           │ │
+│ └──────────────────────────────────────────────────────────────────────────┘ │
+│                                   ▼                                          │
+│                                  END                                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+                               ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                        AI / LLM PROCESSING LAYER                             │
+├──────────────────────────────────────────────────────────────────────────────┤
+│ Ollama (Local LLaMA 3.2 3B Model)                                            │
+│ • score_lead_llm()                                                           │
+│ • generate_welcome_email()                                                   │
+│ • suggest_followup_actions()                                                 │
+│ Privacy Feature: On-Premises Inference (No external API calls)               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+                               ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                               DATA LAYER                                     │
+├──────────────────────────────────────────────────────────────────────────────┤
+│ SQLite Database (leads.db)                                                   │
+│ Tables:                                                                      │
+│ • leads (id, workflow_id, name, phone, email, source, interest,              │
+│          budget_range, score, classification, stage, existing_customer)      │
+│ • interactions (id, lead_id, agent, action, status, details, timestamp)      │
+│ • scheduled_actions (id, lead_id, action_name, scheduled_for,                │
+│                      status, executed_at)                                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+                               ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                      EXTERNAL INTEGRATIONS LAYER                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│ • Gmail SMTP (Email)                                                         │
+│ • Vapi API (Voice)                                                           │
+│ • AI Sensy API (Voice)                                                       │
+│                                                                              │
+│ Environment Variables (.env):                                                │
+│ API_BEARER_TOKEN, GMAIL_USER, GMAIL_APP_PASSWORD, VOICE_PROVIDER,            │
+│ VAPI_API_KEY, VAPI_BASE_URL, SENSY_API_URL, VOICE_WEBHOOK_URL               │
+└──────────────────────────────────────────────────────────────────────────────┘
