@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luxury Automotive CRM YO • Executive Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+      color: #FFFFFF;
+      font-family: 'Poppins', -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: linear-gradient(135deg, rgba(10,14,39,0.95), rgba(26,31,58,0.9));
+      backdrop-filter: blur(20px);
+      border-bottom: 2px solid rgba(59,130,246,0.3);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .brand {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8, #ffffff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .header-controls input {
+      padding: 12px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: #FFF;
+      font-size: 14px;
+    }
+
+    .refresh-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      border: none;
+      border-radius: 12px;
+      color: #ffffff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+    }
+
+    .refresh-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(59,130,246,0.5);
+    }
+
+    .container {
+      padding: 30px 40px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .metric-card {
+      background: linear-gradient(135deg, rgba(26,31,58,0.8), rgba(10,14,39,0.6));
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 20px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .metric-label {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+
+    .metric-value {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #3b82f6, #ffffff, #1d4ed8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .metric-change {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .pipeline-section {
+      background: linear-gradient(135deg, rgba(26,31,58,0.8), rgba(10,14,39,0.6));
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .pipeline-title {
+      font-size: 20px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #3b82f6, #ffffff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+
+    .kanban-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+
+    .kanban-column {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 12px;
+      padding: 18px;
+      min-height: 400px;
+    }
+
+    .kanban-header {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      background: linear-gradient(135deg, #3b82f6, #ffffff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kanban-count {
+      background: rgba(59,130,246,0.2);
+      color: #3b82f6;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .lead-card {
+      background: linear-gradient(135deg, rgba(26,31,58,0.6), rgba(10,14,39,0.4));
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .lead-card:hover {
+      background: linear-gradient(135deg, rgba(26,31,58,0.8), rgba(10,14,39,0.6));
+      border-color: #3b82f6;
+      transform: translateX(6px);
+      box-shadow: 0 8px 25px rgba(59,130,246,0.2);
+    }
+
+    .lead-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #ffffff;
+    }
+
+    .lead-vehicle {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 8px;
+    }
+
+    .lead-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .badge-hot { background: linear-gradient(135deg, #ff6b6b, #ee5a52); color: white; }
+    .badge-vip { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #ffffff; }
+    .badge-cold { background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; }
+    .badge-warm { background: linear-gradient(135deg, #fd79a8, #e84393); color: white; }
+
+    .loading {
+      color: #3b82f6;
+      font-style: italic;
+    }
+
+    .error {
+      color: #ff6b6b;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">◆ LUXURY CRM</div>
+    <div class="header-controls">
+      <input id="baseUrl" value="http://localhost:5001" placeholder="API URL" />
+      <input id="token" type="password" placeholder="Bearer Token" value="AJoIgBPsxE2_t6Mi7L7DOOTxuWo3iEjFe8QmP2rQ3xU" />
+      <button class="refresh-btn" onclick="loadDashboard()">
+        <span id="btnText">⟳ REFRESH</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Hero Metrics -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">
+          <span class="metric-icon">👥</span>
+          TOTAL LEADS
+        </div>
+        <div class="metric-value" id="mTotal">Loading...</div>
+        <div class="metric-change">
+          <span>↗</span>
+          <span>+12.5% vs last month</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">
+          <span class="metric-icon">🔥</span>
+          HOT LEADS
+        </div>
+        <div class="metric-value" id="mHot">Loading...</div>
+        <div class="metric-change">
+          <span>🎯</span>
+          <span>Urgent Action Required</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">
+          <span class="metric-icon">📈</span>
+          CONVERSION RATE
+        </div>
+        <div class="metric-value" id="mConv">Loading...</div>
+        <div class="metric-change">
+          <span>↗</span>
+          <span>Target: 25.0%</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">
+          <span class="metric-icon">💰</span>
+          PIPELINE VALUE
+        </div>
+        <div class="metric-value" id="mRev">Loading...</div>
+        <div class="metric-change">
+          <span>💎</span>
+          <span>₹ INR Forecast</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pipeline View -->
+    <div class="pipeline-section">
+      <div class="pipeline-title">◆ Executive Pipeline View</div>
+      <div class="kanban-grid" id="kanban">
+        <div class="kanban-column">
+          <div class="kanban-header">
+            <span>📋 NEW</span>
+            <span class="kanban-count" id="new-count">0</span>
+          </div>
+          <div id="new-leads"></div>
+        </div>
+        <div class="kanban-column">
+          <div class="kanban-header">
+            <span>📞 CONTACTED</span>
+            <span class="kanban-count" id="contacted-count">0</span>
+          </div>
+          <div id="contacted-leads"></div>
+        </div>
+        <div class="kanban-column">
+          <div class="kanban-header">
+            <span>✓ QUALIFIED</span>
+            <span class="kanban-count" id="qualified-count">0</span>
+          </div>
+          <div id="qualified-leads"></div>
+        </div>
+        <div class="kanban-column">
+          <div class="kanban-header">
+            <span>💎 OPPORTUNITY</span>
+            <span class="kanban-count" id="opportunity-count">0</span>
+          </div>
+          <div id="opportunity-leads"></div>
+        </div>
+        <div class="kanban-column">
+          <div class="kanban-header">
+            <span>🏆 WON</span>
+            <span class="kanban-count" id="closed_won-count">0</span>
+          </div>
+          <div id="closed_won-leads"></div>
+        </div>
+        <div class="kanban-column">
+          <div class="kanban-header">
+            <span>✗ LOST</span>
+            <span class="kanban-count" id="closed_lost-count">0</span>
+          </div>
+          <div id="closed_lost-leads"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Utility functions
+    const $ = (id) => document.getElementById(id);
+    
+    function formatINR(n) {
+      return '₹' + Math.round(n).toLocaleString('en-IN');
+    }
+
+    async function fetchJSON(path) {
+      const base = $('baseUrl').value.trim().replace(/\/$/, '');
+      const token = $('token').value.trim();
+      console.log(`Fetching: ${base}${path}`);
+      console.log(`Token: ${token ? 'Present' : 'Missing'}`);
+      
+      const res = await fetch(base + path, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+      
+      return await res.json();
+    }
+
+    function renderMetrics(data) {
+      console.log('Rendering metrics with data:', data);
+      
+      const stats = data.stats || {};
+      const counts = data.pipeline_counts || {};
+      const forecast = data.forecast_revenue || {};
+
+      // Update metric values
+      $('mTotal').innerText = stats.total_leads || 0;
+      $('mHot').innerText = stats.classification_counts?.hot_lead || 0;
+      
+      // Calculate conversion rate
+      const qualifiedLeads = (counts.qualified || 0) + (counts.opportunity || 0) + (counts.closed_won || 0);
+      const conversionRate = stats.total_leads > 0 ? (qualifiedLeads / stats.total_leads) * 100 : 0;
+      $('mConv').innerText = conversionRate.toFixed(1) + '%';
+      
+      $('mRev').innerText = formatINR(forecast.estimated_revenue || 0);
+
+      console.log('Metrics updated:', {
+        total: $('mTotal').innerText,
+        hot: $('mHot').innerText,
+        conversion: $('mConv').innerText,
+        revenue: $('mRev').innerText
+      });
+    }
+
+    function renderKanban(data) {
+      console.log('Rendering kanban with data:', data);
+      
+      // Group leads by stage
+      const leadsByStage = {};
+      data.forEach(lead => {
+        const stage = lead.stage || 'new';
+        if (!leadsByStage[stage]) {
+          leadsByStage[stage] = [];
+        }
+        leadsByStage[stage].push(lead);
+      });
+
+      console.log('Leads grouped by stage:', leadsByStage);
+
+      // Update each column
+      const stages = ['new', 'contacted', 'qualified', 'opportunity', 'closed_won', 'closed_lost'];
+      
+      stages.forEach(stage => {
+        const leads = leadsByStage[stage] || [];
+        const countElement = $(`${stage}-count`);
+        const leadsElement = $(`${stage}-leads`);
+        
+        if (countElement) countElement.textContent = leads.length;
+        
+        if (leadsElement) {
+          leadsElement.innerHTML = leads.map(lead => {
+            const score = lead.score || 0;
+            let badgeClass = 'badge-cold';
+            if (score >= 75) badgeClass = 'badge-hot';
+            else if (score >= 50) badgeClass = 'badge-warm';
+            if (lead.classification === 'vip_client') badgeClass = 'badge-vip';
+
+            return `
+              <div class="lead-card" onclick="showLeadDetails('${lead.name}', '${lead.phone}', '${lead.email}', '${lead.stage}', '${lead.classification}', ${lead.score})">
+                <div class="lead-name">${lead.name || 'Unknown'}</div>
+                <div class="lead-vehicle">${lead.interest || 'Vehicle N/A'}</div>
+                <div class="lead-badges">
+                  <span class="badge ${badgeClass}">${(lead.classification || '').replace('_', ' ').toUpperCase()}</span>
+                  <span class="badge" style="background:rgba(255,255,255,0.1);">${score}</span>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      });
+    }
+
+    function showLeadDetails(name, phone, email, stage, classification, score) {
+      alert(`Lead Details:\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nStage: ${stage}\nClassification: ${classification}\nScore: ${score}`);
+    }
+
+    async function loadDashboard() {
+      const btn = $('btnText');
+      btn.textContent = 'Loading...';
+
+      try {
+        console.log('Starting dashboard load...');
+        
+        const [metrics, kanban] = await Promise.all([
+          fetchJSON('/api/metrics'),
+          fetchJSON('/api/kanban')
+        ]);
+
+        console.log('Data received:', { metrics, kanban });
+
+        renderMetrics(metrics);
+        renderKanban(kanban);
+
+        btn.textContent = '✓ Loaded';
+
+      } catch (err) {
+        console.error('Dashboard load error:', err);
+        btn.textContent = '❌ Error';
+        
+        // Show error in metrics
+        $('mTotal').innerText = 'Error';
+        $('mHot').innerText = 'Error';
+        $('mConv').innerText = 'Error';
+        $('mRev').innerText = 'Error';
+        
+        alert('Error loading dashboard: ' + err.message);
+      }
+    }
+
+    // Auto-load dashboard when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, starting dashboard...');
+      setTimeout(loadDashboard, 500);
+    });
+  </script>
+</body>
+</html>
